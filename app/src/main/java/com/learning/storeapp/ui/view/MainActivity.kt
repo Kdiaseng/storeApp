@@ -1,7 +1,7 @@
-package com.learning.storeapp
+package com.learning.storeapp.ui.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.learning.storeapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

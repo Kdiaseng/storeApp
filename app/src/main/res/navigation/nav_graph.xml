@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listProductsFragment"
-        android:name="com.learning.storeapp.ListProductsFragment"
+        android:name="com.learning.storeapp.ui.view.ListProductsFragment"
         android:label="fragment_list_products"
         tools:layout="@layout/fragment_list_products" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.learning.storeapp.DetailsFragment"
+        android:name="com.learning.storeapp.ui.view.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" />
 </navigation>
