@@ -2,7 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.StoreApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+         <item name="colorPrimary">@color/yellow</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
+    </style>
+
+    <style name="GreenText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#00FF00</item>
     </style>
 
     <style name="Theme.StoreApp" parent="Base.Theme.StoreApp" />
