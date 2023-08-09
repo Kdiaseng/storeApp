@@ -9,5 +9,14 @@
         android:id="@+id/listProductsFragment"
         android:name="com.learning.storeapp.ListProductsFragment"
         android:label="fragment_list_products"
-        tools:layout="@layout/fragment_list_products" />
+        tools:layout="@layout/fragment_list_products" >
+        <action
+            android:id="@+id/action_listProductsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.learning.storeapp.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" />
 </navigation>
