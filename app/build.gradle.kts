@@ -46,14 +46,19 @@ android {
 
 dependencies {
     val navVersion = "2.6.0"
-    val koinVersions = "3.4.3"
+    val koinVersion = "3.4.3"
+    val retrofitVersion = "2.9.0"
 
     //Navigation component
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
     //koin - Inject Dependencies
-    implementation ("io.insert-koin:koin-android:$koinVersions")
+    implementation ("io.insert-koin:koin-android:$koinVersion")
+
+    //retrofit
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation ("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
