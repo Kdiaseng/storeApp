@@ -1,3 +1,5 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,6 +8,10 @@ plugins {
 android {
     namespace = "com.learning.storeapp"
     compileSdk = 33
+
+    viewBinding {
+        this.enable = true
+    }
 
     defaultConfig {
         applicationId = "com.learning.storeapp"
@@ -37,7 +43,7 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
