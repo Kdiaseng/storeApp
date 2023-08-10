@@ -15,7 +15,6 @@ class ProductRemoteDataSource(private val serviceAPI: ProductApi) {
         } catch (ex: Exception) {
             throw ex
         }
-
     }
 
 }
