@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/detailsFragment">
+    app:startDestination="@id/listProductsFragment">
 
     <fragment
         android:id="@+id/listProductsFragment"
         android:name="com.learning.storeapp.ui.view.ListProductsFragment"
         android:label="fragment_list_products"
-        tools:layout="@layout/fragment_list_products" >
+        tools:layout="@layout/fragment_list_products">
         <action
             android:id="@+id/action_listProductsFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
@@ -18,5 +18,13 @@
         android:id="@+id/detailsFragment"
         android:name="com.learning.storeapp.ui.view.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details">
+
+        <argument
+            android:name="itemUiState"
+            app:argType="com.learning.storeapp.ui.model.ItemUiState"
+            app:nullable="true" />
+    </fragment>
+
+
 </navigation>

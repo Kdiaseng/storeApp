@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.learning.storeapp.R
 import com.learning.storeapp.databinding.FragmentListProductsBinding
 import com.learning.storeapp.ui.viewModels.ProductsViewModel
 import kotlinx.coroutines.launch
@@ -41,7 +43,9 @@ class ListProductsFragment : Fragment() {
                     binding.progressCircular.isVisible = uiState.isFetchingProducts
 
                     binding.recyclerView.adapter = ProductsAdapter(uiState.products){
-                        Log.e("ITEM", it.description)
+                        val bundle = Bundle()
+                        bundle.putParcelable("itemUiState", it)
+                       findNavController().navigate(R.id.action_listProductsFragment_to_detailsFragment, bundle)
                     }
                     binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 

@@ -9,7 +9,7 @@ data class ProductApiModel(
     val price: Double = 2.5,
     val category: String = "",
     val image: String = "",
-//    val rating: Rating
+    val rating: Rating
 )
 
 data class Rating(val rate: Double, val count: Int)
