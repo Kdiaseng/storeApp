@@ -40,7 +40,9 @@ class ListProductsFragment : Fragment() {
                 viewModel.uiState.collect { uiState ->
                     binding.progressCircular.isVisible = uiState.isFetchingProducts
 
-                    binding.recyclerView.adapter = ProductsAdapter(uiState.products)
+                    binding.recyclerView.adapter = ProductsAdapter(uiState.products){
+                        Log.e("ITEM", it.description)
+                    }
                     binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
                     uiState.userMessages.firstOrNull()?.let {
