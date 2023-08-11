@@ -56,6 +56,9 @@ dependencies {
     //koin - Inject Dependencies
     implementation ("io.insert-koin:koin-android:$koinVersion")
 
+    //picasso
+
+    implementation ("com.squareup.picasso:picasso:2.8")
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation ("com.squareup.retrofit2:converter-gson:$retrofitVersion")

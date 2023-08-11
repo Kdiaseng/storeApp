@@ -3,10 +3,12 @@ package com.learning.storeapp.ui.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.learning.storeapp.R
 import com.learning.storeapp.databinding.ItemLayoutBinding
 import com.learning.storeapp.ui.model.ItemUiState
+import com.squareup.picasso.Picasso
 
-class ProductsAdapter(private val dataSet: MutableList<ItemUiState>) :
+class ProductsAdapter(private val dataSet: List<ItemUiState>) :
     RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     class ViewHolder(private val itemBinding: ItemLayoutBinding) :
@@ -14,7 +16,10 @@ class ProductsAdapter(private val dataSet: MutableList<ItemUiState>) :
         fun bind(item: ItemUiState) {
             itemBinding.apply {
                 textTitle.text = item.title
-                textPrice.text = item.price.toString()
+                "R$ ${item.price}".also { textPrice.text = it }
+                Picasso.get().load(item.image)
+                    .placeholder(android.R.drawable.ic_menu_report_image)
+                    .into(image)
             }
         }
     }

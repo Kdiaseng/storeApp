@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.learning.storeapp.databinding.FragmentListProductsBinding
 import com.learning.storeapp.ui.viewModels.ProductsViewModel
@@ -32,19 +33,22 @@ class ListProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.fetchProducts()
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     binding.progressCircular.isVisible = uiState.isFetchingProducts
+
+                    binding.recyclerView.adapter = ProductsAdapter(uiState.products)
+                    binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+
                     uiState.userMessages.firstOrNull()?.let {
                         Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT)
                             .setAction("Action") {}.show()
                         viewModel.userMessageShown(it.id)
                     }
-                    for (product in uiState.products) {
-                        Log.e("descriptions", product.description)
-                    }
+
                 }
             }
         }

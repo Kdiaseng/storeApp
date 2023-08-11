@@ -14,8 +14,11 @@ data class ItemUiState(
     val title: String,
     val description: String,
     val price: Double,
+    val image: String,
     val itemMarked: Boolean = false,
 )
 
-fun ProductApiModel.toProductUiState() = ItemUiState(this.title, this.description, this.price)
+fun ProductApiModel.toProductUiState() =
+    ItemUiState(this.title, this.description, this.price, this.image)
+
 fun List<ProductApiModel>.toProductUiStaList() = this.map { it.toProductUiState() }
