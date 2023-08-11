@@ -1,10 +1,11 @@
 package com.learning.storeapp.ui.model
 
 import com.learning.storeapp.data.model.ProductApiModel
-
+data class UserMessage(val id: Long, val message: String)
 
 data class ProductUiState(
     val isFetchingProducts: Boolean = false,
+    val userMessages: List<UserMessage> = emptyList(),
     val products: List<ItemUiState> = listOf()
 )
 

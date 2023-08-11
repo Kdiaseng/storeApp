@@ -5,12 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.learning.storeapp.data.repository.ProductRepository
 import com.learning.storeapp.ui.model.ProductUiState
+import com.learning.storeapp.ui.model.UserMessage
 import com.learning.storeapp.ui.model.toProductUiStaList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class ProductsViewModel(private val productRepository: ProductRepository) : ViewModel() {
 
@@ -24,19 +29,34 @@ class ProductsViewModel(private val productRepository: ProductRepository) : View
         viewModelScope.launch {
             try {
                 val products = productRepository.fetch()
+
                 _uiState.update { productUiState ->
                     productUiState.copy(
                         products = products.toProductUiStaList(),
                         isFetchingProducts = false
                     )
                 }
-                for (product in uiState.value.products) {
-                    Log.e("PRODUTO", product.title)
-                }
             } catch (ex: Exception) {
+                _uiState.update {
+                    it.copy(isFetchingProducts = false)
+                }
+                _uiState.update { currentState ->
+                    val messages = currentState.userMessages + UserMessage(
+                        id = UUID.randomUUID().mostSignificantBits,
+                        message = "Deu BO"
+                    )
+                    currentState.copy(userMessages = messages)
+                }
                 Log.e("PRODUTO", ex.message.toString())
             }
         }
+    }
 
+    fun userMessageShown(messageId: Long) {
+        _uiState.update { currentUiState ->
+            val messages = currentUiState.userMessages.filterNot { it.id == messageId }
+            Log.e("MESSAGE", messages.size.toString())
+            currentUiState.copy(userMessages = messages)
+        }
     }
 }
