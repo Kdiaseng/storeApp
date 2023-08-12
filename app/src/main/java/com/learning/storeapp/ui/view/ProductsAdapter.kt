@@ -1,9 +1,9 @@
 package com.learning.storeapp.ui.view
 
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.learning.storeapp.R
 import com.learning.storeapp.databinding.ItemLayoutBinding
 import com.learning.storeapp.ui.model.ItemUiState
 import com.squareup.picasso.Picasso

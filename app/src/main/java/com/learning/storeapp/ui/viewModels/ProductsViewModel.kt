@@ -20,6 +20,17 @@ class ProductsViewModel(private val productRepository: ProductRepository) : View
     private val _uiState = MutableStateFlow(ProductUiState())
     val uiState: StateFlow<ProductUiState> = _uiState.asStateFlow()
 
+
+    fun searchProduct(value: String) {
+        Log.e("teste", value)
+        if (value.isEmpty()) fetchProducts()
+        _uiState.update { it.copy(isFetchingProducts = true) }
+        _uiState.update { it ->
+            val newListProducts = it.products.filter { it.title.contains(value, ignoreCase = true) }
+            it.copy(products = newListProducts, isFetchingProducts = false)
+        }
+    }
+
     fun fetchProducts() {
         _uiState.update {
             it.copy(isFetchingProducts = true)
@@ -41,7 +52,7 @@ class ProductsViewModel(private val productRepository: ProductRepository) : View
                 _uiState.update { currentState ->
                     val messages = currentState.userMessages + UserMessage(
                         id = UUID.randomUUID().mostSignificantBits,
-                        message = "Deu BO"
+                        message = ex.message.toString()
                     )
                     currentState.copy(userMessages = messages)
                 }

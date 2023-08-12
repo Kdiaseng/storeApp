@@ -36,18 +36,41 @@ class ListProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
+            Log.e("VALUE", binding.searchBar.text.toString())
+            binding.searchBar.text = binding.searchView.text
+            binding.searchView.hide()
+            viewModel.searchProduct(binding.searchBar.text.toString())
+            return@setOnEditorActionListener false
+        }
+
+
+
         viewModel.fetchProducts()
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
                     binding.progressCircular.isVisible = uiState.isFetchingProducts
 
-                    binding.recyclerView.adapter = ProductsAdapter(uiState.products){
+                    binding.recyclerView.adapter = ProductsAdapter(uiState.products) {
                         val bundle = Bundle()
                         bundle.putParcelable("itemUiState", it)
-                       findNavController().navigate(R.id.action_listProductsFragment_to_detailsFragment, bundle)
+                        findNavController().navigate(
+                            R.id.action_listProductsFragment_to_detailsFragment,
+                            bundle
+                        )
                     }
                     binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+
+                    binding.recyclerViewSearch.adapter = SearchProductAdapter(uiState.products) {
+                        val bundle = Bundle()
+                        bundle.putParcelable("itemUiState", it)
+                        findNavController().navigate(
+                            R.id.action_listProductsFragment_to_detailsFragment,
+                            bundle
+                        )
+                    }
+                    binding.recyclerViewSearch.layoutManager = GridLayoutManager(context, 1)
 
                     uiState.userMessages.firstOrNull()?.let {
                         Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT)
