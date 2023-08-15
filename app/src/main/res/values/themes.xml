@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.StoreApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <item name="colorPrimary">#636269</item>
+        <item name="colorPrimary">#4F4E52</item>
         <item name="buttonStyle">@style/Widget.AppCompat.Button.Borderless</item>
     </style>
 

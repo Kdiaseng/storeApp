@@ -31,6 +31,12 @@ class ProductsViewModel(private val productRepository: ProductRepository) : View
         }
     }
 
+    fun changeModeView(){
+        _uiState.update {
+            it.copy(isListModeView = !it.isListModeView)
+        }
+    }
+
     fun fetchProducts() {
         _uiState.update {
             it.copy(isFetchingProducts = true)

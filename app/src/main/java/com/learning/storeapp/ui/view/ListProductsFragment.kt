@@ -1,7 +1,6 @@
 package com.learning.storeapp.ui.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ListProductsFragment : Fragment() {
-
     private var _binding: FragmentListProductsBinding? = null
     private val binding get() = _binding!!
 
@@ -39,7 +37,6 @@ class ListProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
-            Log.e("VALUE", binding.searchBar.text.toString())
             binding.searchBar.text = binding.searchView.text
             binding.searchView.hide()
             viewModel.searchProduct(binding.searchBar.text.toString())
@@ -50,12 +47,20 @@ class ListProductsFragment : Fragment() {
             viewModel.searchProduct(it.toString())
         }
 
+        binding.searchBar.inflateMenu(R.menu.searchbar_menu)
+        binding.searchBar.setOnMenuItemClickListener {
+            it.isChecked = !it.isChecked
+            viewModel.changeModeView()
+            it.setIcon(
+                if (it.isChecked) MODE_VIEW_LIST else MODE_VIEW_GRID
+            )
+            return@setOnMenuItemClickListener false
+        }
+
         viewModel.fetchProducts()
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
-
-                    Log.e("UPDATE", "UPDATE")
                     binding.progressCircular.isVisible = uiState.isFetchingProducts
 
                     binding.recyclerView.adapter = ProductsAdapter(uiState.products) {
@@ -66,7 +71,8 @@ class ListProductsFragment : Fragment() {
                             bundle
                         )
                     }
-                    binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
+                    val spanCount = if (uiState.isListModeView) 1 else 2
+                    binding.recyclerView.layoutManager = GridLayoutManager(context, spanCount)
 
                     binding.recyclerViewSearch.adapter = SearchProductAdapter(uiState.products) {
                         val bundle = Bundle()
@@ -89,5 +95,9 @@ class ListProductsFragment : Fragment() {
         }
     }
 
+    companion object {
+        val MODE_VIEW_LIST: Int = R.drawable.outline_list
+        val MODE_VIEW_GRID: Int = R.drawable.outline_grid
+    }
 
 }
