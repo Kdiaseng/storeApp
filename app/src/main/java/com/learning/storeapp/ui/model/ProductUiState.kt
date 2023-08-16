@@ -10,7 +10,7 @@ data class UserMessage(val id: Long, val message: String)
 
 data class ProductUiState(
     val isFetchingProducts: Boolean = false,
-    val isListModeView: Boolean = false,
+    val isListModeView: Boolean = true,
     val userMessages: List<UserMessage> = emptyList(),
     val products: List<ItemUiState> = listOf()
 )

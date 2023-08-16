@@ -8,11 +8,11 @@ import com.learning.storeapp.databinding.ItemLayoutBinding
 import com.learning.storeapp.ui.model.ItemUiState
 import com.squareup.picasso.Picasso
 
-class ProductsAdapter(
+class ProductsGridAdapter(
     private val dataSet: List<ItemUiState>,
     private val onClick: (ItemUiState) -> Unit
 ) :
-    RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+    RecyclerView.Adapter<ProductsGridAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val itemBinding: ItemLayoutBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {

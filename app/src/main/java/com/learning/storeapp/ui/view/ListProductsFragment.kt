@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.learning.storeapp.R
 import com.learning.storeapp.databinding.FragmentListProductsBinding
+import com.learning.storeapp.ui.model.ItemUiState
 import com.learning.storeapp.ui.viewModels.ProductsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,65 +36,95 @@ class ListProductsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.searchView.editText.setOnEditorActionListener { _, _, _ ->
-            binding.searchBar.text = binding.searchView.text
-            binding.searchView.hide()
-            viewModel.searchProduct(binding.searchBar.text.toString())
-            return@setOnEditorActionListener false
-        }
-
-        binding.searchView.editText.addTextChangedListener {
-            viewModel.searchProduct(it.toString())
-        }
-
-        binding.searchBar.inflateMenu(R.menu.searchbar_menu)
-        binding.searchBar.setOnMenuItemClickListener {
-            it.isChecked = !it.isChecked
-            viewModel.changeModeView()
-            it.setIcon(
-                if (it.isChecked) MODE_VIEW_LIST else MODE_VIEW_GRID
-            )
-            return@setOnMenuItemClickListener false
-        }
-
         viewModel.fetchProducts()
+        setupListener()
+        setupObserver()
+
+
+    }
+
+    private fun setupObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { uiState ->
-                    binding.progressCircular.isVisible = uiState.isFetchingProducts
-
-                    binding.recyclerView.adapter = ProductsAdapter(uiState.products) {
-                        val bundle = Bundle()
-                        bundle.putParcelable("itemUiState", it)
-                        findNavController().navigate(
-                            R.id.action_listProductsFragment_to_detailsFragment,
-                            bundle
-                        )
+                    binding.apply {
+                        progressCircular.isVisible = uiState.isFetchingProducts
+                        recyclerViewSearch.adapter =
+                            SearchProductAdapter(uiState.products, ::goToDetailsProduct)
+                        recyclerViewSearch.layoutManager = GridLayoutManager(context, 1)
                     }
-                    val spanCount = if (uiState.isListModeView) 1 else 2
-                    binding.recyclerView.layoutManager = GridLayoutManager(context, spanCount)
 
-                    binding.recyclerViewSearch.adapter = SearchProductAdapter(uiState.products) {
-                        val bundle = Bundle()
-                        bundle.putParcelable("itemUiState", it)
-                        findNavController().navigate(
-                            R.id.action_listProductsFragment_to_detailsFragment,
-                            bundle
-                        )
+                    if (uiState.isListModeView) {
+                        showModeList(uiState.products)
+                    } else {
+                        showModeGrid(uiState.products)
                     }
-                    binding.recyclerViewSearch.layoutManager = GridLayoutManager(context, 1)
-
                     uiState.userMessages.firstOrNull()?.let {
                         Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT)
                             .setAction("Action") {}.show()
                         viewModel.userMessageShown(it.id)
                     }
-
                 }
             }
         }
     }
+
+    private fun setupListener() {
+        binding.apply {
+            searchView.editText.also {
+                it.setOnEditorActionListener { _, _, _ ->
+                    this.searchBar.text = this.searchView.text
+                    this.searchView.hide()
+                    return@setOnEditorActionListener false
+                }
+                it.addTextChangedListener { text ->
+                    viewModel.searchProduct(text.toString())
+                }
+
+            }
+            searchBar.also {
+                it.inflateMenu(R.menu.searchbar_menu)
+                it.setOnMenuItemClickListener { itemMenu ->
+                    itemMenu.isChecked = !itemMenu.isChecked
+                    viewModel.changeModeView()
+                    itemMenu.setIcon(
+                        if (itemMenu.isChecked) MODE_VIEW_LIST else MODE_VIEW_GRID
+                    )
+                    return@setOnMenuItemClickListener false
+                }
+            }
+        }
+    }
+
+    private fun showModeGrid(products: List<ItemUiState>) {
+        binding.apply {
+            val adapter = ProductsGridAdapter(products, ::goToDetailsProduct)
+            recyclerView.also {
+                it.adapter = adapter
+                it.layoutManager = GridLayoutManager(context, 2)
+            }
+        }
+    }
+
+    private fun showModeList(products: List<ItemUiState>) {
+        binding.apply {
+            val adapter = ProductsListAdapter(products, ::goToDetailsProduct)
+            recyclerView.also {
+                it.adapter = adapter
+                it.layoutManager = GridLayoutManager(context, 1)
+            }
+        }
+    }
+
+    private fun goToDetailsProduct(item: ItemUiState) {
+        val bundle = Bundle()
+        bundle.putParcelable("itemUiState", item)
+        findNavController().navigate(
+            R.id.action_listProductsFragment_to_detailsFragment,
+            bundle
+        )
+    }
+
 
     companion object {
         val MODE_VIEW_LIST: Int = R.drawable.outline_list
