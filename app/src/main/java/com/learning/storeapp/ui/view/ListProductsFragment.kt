@@ -39,8 +39,6 @@ class ListProductsFragment : Fragment() {
         viewModel.fetchProducts()
         setupListener()
         setupObserver()
-
-
     }
 
     private fun setupObserver() {
@@ -85,11 +83,19 @@ class ListProductsFragment : Fragment() {
             searchBar.also {
                 it.inflateMenu(R.menu.searchbar_menu)
                 it.setOnMenuItemClickListener { itemMenu ->
-                    itemMenu.isChecked = !itemMenu.isChecked
-                    viewModel.changeModeView()
-                    itemMenu.setIcon(
-                        if (itemMenu.isChecked) MODE_VIEW_LIST else MODE_VIEW_GRID
-                    )
+                    when (itemMenu.itemId) {
+                        R.id.show_mode -> {
+                            itemMenu.isChecked = !itemMenu.isChecked
+                            viewModel.changeModeView()
+                            itemMenu.setIcon(
+                                if (itemMenu.isChecked) MODE_VIEW_LIST else MODE_VIEW_GRID
+                            )
+                        }
+
+                        R.id.favorite -> {
+
+                        }
+                    }
                     return@setOnMenuItemClickListener false
                 }
             }

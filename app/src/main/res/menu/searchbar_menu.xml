@@ -6,4 +6,11 @@
         android:checked="true"
         android:title="Mode"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/favorite"
+        android:icon="@drawable/round_favorite"
+        android:checked="true"
+        app:iconTint="@color/yellow"
+        android:title="Favorite"
+        app:showAsAction="ifRoom" />
 </menu>
