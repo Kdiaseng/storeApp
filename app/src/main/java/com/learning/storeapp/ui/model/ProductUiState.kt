@@ -15,7 +15,6 @@ data class ProductUiState(
     val products: List<ItemUiState> = listOf()
 )
 
-
 @kotlinx.parcelize.Parcelize
 data class ItemUiState(
     val title: String,

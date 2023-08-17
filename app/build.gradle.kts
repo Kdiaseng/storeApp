@@ -1,10 +1,10 @@
 
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
 }
 
 
@@ -50,6 +50,14 @@ dependencies {
     val navVersion = "2.6.0"
     val koinVersion = "3.4.3"
     val retrofitVersion = "2.9.0"
+    val roomVersion = "2.5.2"
+
+    //room dataBase
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+    ksp("androidx.room:room-compiler:$roomVersion")
 
     //Navigation component
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
