@@ -22,7 +22,6 @@ class ProductsViewModel(private val productRepository: ProductRepository) : View
 
 
     fun searchProduct(value: String) {
-        Log.e("teste", value)
         if (value.isEmpty()) fetchProducts()
         _uiState.update { it.copy(isFetchingProducts = true) }
         _uiState.update { it ->
@@ -31,7 +30,7 @@ class ProductsViewModel(private val productRepository: ProductRepository) : View
         }
     }
 
-    fun changeModeView(){
+    fun changeModeView() {
         _uiState.update {
             it.copy(isListModeView = !it.isListModeView)
         }
