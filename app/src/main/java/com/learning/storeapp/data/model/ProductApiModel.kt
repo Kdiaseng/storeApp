@@ -1,5 +1,7 @@
 package com.learning.storeapp.data.model
 
+import com.learning.storeapp.data.local.ProductEntity
+
 
 data class ProductsApiModel(val data: List<ProductApiModel>)
 data class ProductApiModel(
@@ -13,3 +15,16 @@ data class ProductApiModel(
 )
 
 data class Rating(val rate: Double, val count: Int)
+
+
+fun ProductApiModel.toEntity() = ProductEntity(
+    id = this.id,
+    title = this.title,
+    description = this.description,
+    price = this.price,
+    image = null,
+    ratingCount = this.rating.count,
+    ratingRate = this.rating.rate
+)
+
+fun List<ProductApiModel>.toEntity() = this.map { it.toEntity() }
